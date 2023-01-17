@@ -47,7 +47,6 @@ function dataView() {      // Метод передачи данных на ст
       }
     }
   }
- console.log("DFA");
 
   
   // document.getElementById('score01').innerHTML = score;
