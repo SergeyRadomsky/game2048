@@ -6,50 +6,206 @@ let gameover = 0
 let score = 0
 let x = 4, y = 4;
 let massive = [];
+
 for (let i = 0; i < y; i++){
   massive[i] = [];
   for (let j = 0; j < x; j++){
     massive[i][j] = 0;
   }
 }
-console.log(massive);
 
-// function randomaiser(min ,max) {
-//   let Xrandom = Math.random(0, 3)
-//   console.log(Xrandom);
+// massive[0][1] = 2
+massive[1][2] = 2
+massive[1][3] = 2
+
+// function randomNum() {       // Метод генерации случайных чисел и присвоения начального случайного числа mydata
+//   for(;;){                     // Циклу for здесь нельзя задать фиксированное условие, потому что конечное условие не может быть известно, когда игра запущена, и он может работать только последовательно
+//     let x = Math.floor(Math.random()*4);      // Задаем случайную величину и пусть это будет координата, в которой число появляется случайным образом
+//     let y = Math.floor(Math.random()*4);
+//     if(massive[y][x] == 0) {               // Если значение в текущей координате в данных равно 0 или пусто, вставляем случайное число 2 или 4
+//       let num = Math.random() > 0.75 ? 4 : 2;     // Установленное случайное число 2 или 4 имеет одинаковый шанс выпадения, наполовину открыто
+//       massive[y][x] = num;
+//       break;
+//     }
+//   }
 // }
 
-function randomNum() {       // Метод генерации случайных чисел и присвоения начального случайного числа mydata
-  for(;;){                     // Циклу for здесь нельзя задать фиксированное условие, потому что конечное условие не может быть известно, когда игра запущена, и он может работать только последовательно
-    let x = Math.floor(Math.random()*4);      // Задаем случайную величину и пусть это будет координата, в которой число появляется случайным образом
-    let y = Math.floor(Math.random()*4);
-    if(massive[x][y] == 0) {               // Если значение в текущей координате в данных равно 0 или пусто, вставляем случайное число 2 или 4
-      let num = Math.random() > 0.75 ? 4 : 2;     // Установленное случайное число 2 или 4 имеет одинаковый шанс выпадения, наполовину открыто
-      massive[x][y] = num;
-      break;
-    }
-  }
-}
-
-
-
 function dataView() {      // Метод передачи данных на страницу и контроль смены стиля
-  for(let x = 0;x < 4;x++){
-    for(let y = 0; y < 4; y++){
-      let div = document.getElementById("c" + x + y);
-      if (massive[x][y] == 0) {
+  for(let y = 0; y < 4; y++){
+    for(let x = 0; x < 4; x++){
+      let div = document.getElementById("c" + y + x);
+      if (massive[y][x] == 0) {
         div.innerHTML = "";
         div.className = "cell";
       }
       else {
-        div.innerHTML = massive[x][y];
-        div.className = 'cell n'+ massive[x][y];
+        div.innerHTML = massive[y][x];
+        div.className = 'cell n'+ massive[y][x];
       }
     }
   }
- console.log("DFA");
+}
 
-  
+let mass = []
+for (let i = 0; i < y; i++){
+  mass[i] = 0;
+}
+mass[0] = 0
+mass[1] = 8
+mass[2] = 8
+mass[3] = 8
+console.log(mass);
+
+// баг с двумя 0
+// function checkedNextValueLeft() {
+// 	for (let i = 0; i < mass.length; i++) {
+// 		let nextValue = 0
+// 		let previosValue = 0
+// 		if (typeof(mass[i-1]) != undefined) {
+// 			previosValue = mass[i-1]
+// 		}
+// 		if (typeof(mass[i+1]) != undefined)
+// 		if ((mass[i] != 0) && (typeof(mass[i]) != undefined)) {
+// 			if (nextValue == mass[i]) {
+// 				mass[i] += nextValue
+// 				mass[i+1] = 0
+// 			}
+// 		}
+// 	}
+// 	console.log(mass);
+// }
+// checkedNextValueLeft()
+
+function checkedNextValueRigth() {
+	for (let i = 3; i >= 0; i--) {
+		let nextValue = mass[i+1]
+		let previosValue = mass[i-1]
+		if ((mass[i] != 0) && (typeof(mass[i]) != undefined)) {
+			if (nextValue == mass[i]) {
+				mass[i] += nextValue
+				mass[i+1] = 0
+			}
+			// console.log(nextValue);
+			// console.log(previosValue);
+			// console.log(mass[i]);
+
+			// console.log(mass[i++]);
+			// let nextValue = mass[i++]
+			// if (nextValue = "undefined") {
+			// 	console.log(typeof(`${nextValue}`))
+			// }
+		}
+	}
+	console.log(mass);
+}
+checkedNextValueRigth()
+
+// function sdvigRowLeft() {
+// 	for (let i = )
+// }
+
+	// function getNEXTinRow(r,c){
+	// 	for(var i = c+1;i < 4;i++){
+	// 		if (this.mydata[r][i] != 0) {
+	// 			return i;
+	// 		}
+	// 	}
+	// 	return -1;
+	// },
+
+
+//сдвиг в строке
+// function sdvigLeft() {
+// 	let after = 0
+// 	let before
+// 	let i = 1
+// 	for (let j = 0; j < 4; j++) {
+// 		if (massive[i][j] != 0) {
+// 			let actual = massive[i][j]
+// 			// console.log(`${j}`);
+// 			console.log(`${actual}`);
+// 		}
+// 	}
+// }
+// sdvigLeft()
+
+
+
+// function findColumn() {
+// for (let i = 0; i < 4; i++ ) {
+// 	for (let j = 0; j < 4; j++) {
+// 			if (massive[i][j] != 0) {
+// 				// if (massive[i][j] )
+// 				console.log("find");
+// 				break
+// 			}
+// 			else console.log("no");
+// 		}
+// 	}
+// }
+// findColumn()
+
+
+// получал значения по Х
+// function sdvig() {
+// 	let previosValue = 0
+// 	let nextValue = 0
+// 	let j = 3
+// 	for (let i = 0; i < 4; i++) {
+// 		if (massive[i][j] != 0) {
+// 			console.log(massive[i][j])
+// 		}
+// 	}
+// }
+// sdvig()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// function moveUp() {
+// 	for (let i = 0; i < 4; i++) {
+// 		for (let j = 0; j < 4; j++) {
+// 			let nextc = 0;
+// 			if (massive[0+i][0+j] = 0) {
+// 				console.log("FUCK");
+// 				break
+// 			}
+// 			else if (massive[0+i][0+j] != 0) {
+// 				console.log("no FUCK");
+// 			}
+// 		}
+// 	}
+// }
+
+// moveUp()
+
+// if (massive[i] != 0) {
+// 	console.log(massive[i]);
+// }
+	
+	// if (massive[j][i]) {
+	// 	console.log(`hello ${massive[j][i]}`);
+	// }
+
+
+
+
+
   // document.getElementById('score01').innerHTML = score;
   // if (status == gameover) {
   //   document.getElementById('score02').innerHTML = score;
@@ -58,11 +214,31 @@ function dataView() {      // Метод передачи данных на ст
   // else{
   //   document.getElementById('gameover').style.display = 'none';
   // }
-}
 
-randomNum()
+// randomNum()
+// randomNum()
+
+
+// moveUp()
 dataView()
-console.log(massive);
+// console.log(massive);
+
+// console.log(massive[0][0] + ` 1 элемент`)
+// console.log(massive[0][1] + ` 2 элемент`)
+// console.log(massive[0][2] + ` 3 элемент`)
+// console.log(massive[0][3] + ` 4 элемент`)
+// console.log(massive[1][0] + ` 5 элемент`)
+// console.log(massive[1][1] + ` 6 элемент`)
+// console.log(massive[1][2] + ` 7 элемент`)
+// console.log(massive[1][3] + ` 8 элемент`)
+// console.log(massive[2][0] + ` 9 элемент`)
+// console.log(massive[2][1] + ` 10 элемент`)
+// console.log(massive[2][2] + ` 11 элемент`)
+// console.log(massive[2][3] + ` 12 элемент`)
+// console.log(massive[3][0] + ` 13 элемент`)
+// console.log(massive[3][1] + ` 14 элемент`)
+// console.log(massive[3][2] + ` 15 элемент`)
+// console.log(massive[3][3] + ` 16 элемент`)
 
 
 
@@ -382,7 +558,7 @@ document.onkeydown = function(event){
 	}
 	else if (event.keyCode == 40) {
 		game.moveBottom();
-	}	
+	}
 } */
 
 
