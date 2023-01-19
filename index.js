@@ -50,14 +50,198 @@ let mass = []
 for (let i = 0; i < y; i++){
   mass[i] = 0;
 }
-mass[0] = 0
-mass[1] = 8
-mass[2] = 8
-mass[3] = 8
-console.log(mass);
+
+// mass[0] = 4
+// mass[1] = 2
+// mass[2] = 2
+// mass[3] = 0
+
+// mass[0] = 2
+// mass[1] = 2
+// mass[2] = 2
+// mass[3] = 0
+
+mass[0] = 4
+mass[1] = 4
+mass[2] = 16
+mass[3] = 16
+
+console.log(`изначальный массив ${mass}`);
+
+// for (let i = 0; i < mass.length; i++) {
+// if (typeof(mass[i+1]) == "undefined") {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function moveLeft() {
+// убираю все 0 из массива 
+let deleteMass = (qwe) => {
+	return qwe.filter(elem => elem != 0)
+}
+console.log(`массив без 0 через функцию ${deleteMass(mass)}`);
+let resultmass = deleteMass(mass)
+
+//суммирую нужные элементы влево
+let sumLeftElemnts = (resultmass) => {
+	for (let i = 0; i < resultmass.length; i++) {
+		if (resultmass[i+1] != undefined) {
+			// console.log("E");
+			if (resultmass[i] == resultmass[i+1]) {
+					score =+ resultmass[i] + resultmass[i+1]
+					resultmass[i] = resultmass[i] * 2
+					resultmass[i + 1] = 0
+					i++
+				}
+		}
+		// console.log("helo");
+	}
+	// console.log(resultmass);
+	return (resultmass);
+}
+//  sumLeftElemnts(resultmass)
+
+resultmass = sumLeftElemnts(resultmass)
+console.log(resultmass)
+resultmass = deleteMass(resultmass)
+console.log(resultmass)
+// console.log(sumLeftElemnts(resultmass))
+// console.log(sdvigLeft(deleteMass(sumLeftElemnts(resultmass))))
+
+
+// Далее сдвигаю все элементы влево
+let sdvigLeft = (resultmass) => {
+	if (resultmass.length == 0) {
+		resultmass.push(0,0,0,0)
+	}
+	else if (resultmass.length > 0 && resultmass.length <= 1) {
+		resultmass.push(0,0,0)
+	}
+	else if (resultmass.length > 1 && resultmass.length <= 2) {
+		resultmass.push(0,0)
+	}
+	else if (resultmass.length > 2 && resultmass.length <= 3) {
+		resultmass.push(0)
+	}
+	else  if (resultmass.length > 3 && resultmass.length <= 4) {
+		resultmass
+	}
+	return resultmass
+}
+
+resultmass = sdvigLeft(resultmass)
+// return sdvigLeft(resultmass)
+
+let perem = sdvigLeft(resultmass)
+// return mass
+// perem[3] = 1
+mass = perem
+return(mass)
+}
+
+
+let moveRight = () => {
+	// mass.reverse
+	// console.log(mass.reverse());
+
+	let deleteMass = (qwe) => {
+		return qwe.filter(elem => elem != 0)
+	}
+	console.log(`массив без 0 через функцию ${deleteMass(mass)}`);
+	let resultmass = deleteMass(mass)
+
+	//суммирую нужные элементы
+	let sumRightElemnts = (resultmass) => {
+		for (let i = 4; i <= resultmass.length; i--) {
+			if (resultmass[i-1] != undefined) {
+				console.log("E");
+				if (resultmass[i] == resultmass[i-1]) {
+						score =+ resultmass[i] + resultmass[i-1]
+						resultmass[i] = resultmass[i] * 2
+						resultmass[i - 1] = 0
+						i--
+					}
+			}
+			// console.log("helo");
+		}
+		// console.log(resultmass);
+		return (resultmass);
+	}
+	sumRightElemnts(resultmass)
+console.log(sumRightElemnts(resultmass))
+
+
+
+
+}
+
+
+
+
+
+
+
+document.onkeydown = function(event){
+	if (event.keyCode == 37) {
+		moveLeft();
+	}
+	else if (event.keyCode == 38) {
+		// moveLeft();
+	}
+	else if (event.keyCode == 39) {
+		moveRight();	
+	}
+	else if (event.keyCode == 40) {
+		// moveBottom();
+	}
+}
+
+
+
+
+
+
+
+
+
+
+// console.log(`массив без нулей ${deleteMass(perem)}`);
+// console.log(score);
+// let resultSdvigLeft = sdvigLeft()
+// resultSdvigLeft.sdvigLeft
+// console.log(resultSdvigLeft);
+// console.log(sdvigLeft())
+
+
+
+
+
+
+
+
+
+
 
 // баг с двумя 0
-// function checkedNextValueLeft() {
+// function sumRightElemnts() {
 // 	for (let i = 0; i < mass.length; i++) {
 // 		let nextValue = 0
 // 		let previosValue = 0
@@ -74,31 +258,42 @@ console.log(mass);
 // 	}
 // 	console.log(mass);
 // }
+// sumRightElemnts()
+
 // checkedNextValueLeft()
 
-function checkedNextValueRigth() {
-	for (let i = 3; i >= 0; i--) {
-		let nextValue = mass[i+1]
-		let previosValue = mass[i-1]
-		if ((mass[i] != 0) && (typeof(mass[i]) != undefined)) {
-			if (nextValue == mass[i]) {
-				mass[i] += nextValue
-				mass[i+1] = 0
-			}
-			// console.log(nextValue);
-			// console.log(previosValue);
-			// console.log(mass[i]);
 
-			// console.log(mass[i++]);
-			// let nextValue = mass[i++]
-			// if (nextValue = "undefined") {
-			// 	console.log(typeof(`${nextValue}`))
-			// }
-		}
-	}
-	console.log(mass);
-}
-checkedNextValueRigth()
+
+
+
+
+
+
+// function checkedNextValueRigth() {
+// 	for (let i = 3; i >= 0; i--) {
+// 		let nextValue = mass[i+1]
+// 		let previosValue = mass[i-1]
+// 		if ((mass[i] != 0) && (typeof(mass[i]) != undefined) && (nextValue != undefined)) {
+// 			if (nextValue == mass[i]) {
+// 				mass[i] += nextValue
+// 				mass[i + 1] = 0
+// 				if (1)	{
+
+// 				}
+// 			}
+// 			// console.log(nextValue);
+// 			// console.log(previosValue);
+// 			// console.log(mass[i]);
+// 			// console.log(mass[i++]);
+// 			// let nextValue = mass[i++]
+// 			// if (nextValue = "undefined") {
+// 			// 	console.log(typeof(`${nextValue}`))
+// 			// }
+// 		}
+// 	}
+// 	console.log(mass);
+// }
+// checkedNextValueRigth()
 
 // function sdvigRowLeft() {
 // 	for (let i = )
