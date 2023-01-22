@@ -63,8 +63,8 @@ for (let i = 0; i < y; i++){
 
 mass[0] = 4
 mass[1] = 4
-mass[2] = 16
-mass[3] = 16
+mass[2] = 4
+mass[3] = 4
 
 console.log(`изначальный массив ${mass}`);
 
@@ -104,9 +104,9 @@ let resultmass = deleteMass(mass)
 let sumLeftElemnts = (resultmass) => {
 	for (let i = 0; i < resultmass.length; i++) {
 		if (resultmass[i+1] != undefined) {
-			// console.log("E");
+			console.log("E");
 			if (resultmass[i] == resultmass[i+1]) {
-					score =+ resultmass[i] + resultmass[i+1]
+					score += resultmass[i] + resultmass[i+1]
 					resultmass[i] = resultmass[i] * 2
 					resultmass[i + 1] = 0
 					i++
@@ -151,6 +151,7 @@ resultmass = sdvigLeft(resultmass)
 // return sdvigLeft(resultmass)
 
 let perem = sdvigLeft(resultmass)
+	console.log(perem)
 // return mass
 // perem[3] = 1
 mass = perem
@@ -165,32 +166,71 @@ let moveRight = () => {
 	let deleteMass = (qwe) => {
 		return qwe.filter(elem => elem != 0)
 	}
-	console.log(`массив без 0 через функцию ${deleteMass(mass)}`);
+	deleteMass(mass)
 	let resultmass = deleteMass(mass)
+	// console.log(resultmass)
+	console.log(resultmass + " массив после удаления нулей")
+
+	// resultmass = deleteMass(mass)
+	// console.log(`массив без 0 через функцию ${deleteMass(mass)}`);
 
 	//суммирую нужные элементы
-	let sumRightElemnts = (resultmass) => {
-		for (let i = 4; i <= resultmass.length; i--) {
+	let sumRightElements = (resultmass) => {
+		for (let i = resultmass.length; i >= 0; i--) {
 			if (resultmass[i-1] != undefined) {
-				console.log("E");
+				console.log(resultmass[i])
 				if (resultmass[i] == resultmass[i-1]) {
-						score =+ resultmass[i] + resultmass[i-1]
-						resultmass[i] = resultmass[i] * 2
-						resultmass[i - 1] = 0
-						i--
-					}
+					score += resultmass[i] + resultmass[i-1]
+					resultmass[i] = resultmass[i] * 2
+					resultmass[i - 1] = 0
+					i--
+				}
 			}
-			// console.log("helo");
 		}
-		// console.log(resultmass);
-		return (resultmass);
+		return(resultmass)
+			console.log(resultmass);
 	}
-	sumRightElemnts(resultmass)
-console.log(sumRightElemnts(resultmass))
+
+	resultmass = sumRightElements(resultmass)
+	console.log(resultmass)
+	resultmass = deleteMass(resultmass)
+	console.log(resultmass)
 
 
 
+	let sdvigRight = (resultmass) => {
+	if (resultmass.length == 0) {
+		resultmass.unshift(0,0,0,0)
+	}
+	else if (resultmass.length > 0 && resultmass.length <= 1) {
+		resultmass.unshift(0,0,0)
+	}
+	else if (resultmass.length > 1 && resultmass.length <= 2) {
+		resultmass.unshift(0,0)
+	}
+	else if (resultmass.length > 2 && resultmass.length <= 3) {
+		resultmass.unshift(0)
+	}
+	else  if (resultmass.length > 3 && resultmass.length <= 4) {
+		resultmass
+	}
+	return resultmass
+}
 
+resultmass = sdvigRight(resultmass)
+// return sdvigLeft(resultmass)
+
+let perem = sdvigRight(resultmass)
+	console.log(perem)
+// return mass
+// perem[3] = 1
+mass = perem
+return(mass)
+
+	// sumRightElements(resultmass)
+	// 	console.log(resultmass);
+	// 	return (resultmass);
+	// console.log(sumRightElements(resultmass))
 }
 
 
