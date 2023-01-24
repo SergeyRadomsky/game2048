@@ -212,6 +212,131 @@ let moveLeft = () => {	// убираю все 0 из массива
 	}
 
 
+
+// для движения влево (закончено)
+let checkLeft = false
+
+const moveLeft = () => {
+	// const noMoveArr = [].concat(mass)
+	// console.log(noMoveArr);
+	// console.log(noMoveArr);
+// убираю все 0 из массива 
+
+	for (let j = 0; j < mass.length; j++) {
+		// console.log(mass[j], j);
+		
+		const deleteMass = (qwe) => {
+			// console.log(qwe)
+			const resultmass = qwe.filter(elem => elem !== 0)
+			// console.log(resultmass + "  resultmass")
+			return resultmass
+		}
+
+		let resultmass = deleteMass(mass[j])
+		// console.log(resultmass);
+
+		const sumLeftElemnts = (resultmass) => {
+			for (let i = 0; i < resultmass.length; i++) {
+				if (resultmass[i] !== resultmass[i+1] && (resultmass[i] !== 0)) {
+					i++
+					if (resultmass[i] !== resultmass[i+1] && (resultmass[i] !== 0)) {
+						i++
+					}
+				}
+				if ((resultmass[i+1] != undefined) && (resultmass[i] == resultmass[i+1])) {
+					score += resultmass[i] + resultmass[i+1]
+					resultmass[i] = resultmass[i] * 2
+					resultmass[i + 1] = 0
+					i++
+					checkLeft = true
+					// console.log(checkLeft);
+				}
+				else if ((resultmass[i+1] != undefined) && (resultmass[i] !== resultmass[i+1])) {
+					break
+				}
+			}
+			return (resultmass);
+				// console.log("helo");
+		}
+			// console.log(resultmass);
+
+
+		resultmass = sumLeftElemnts(resultmass)
+		// console.log(resultmass, mass[j])
+		resultmass = deleteMass(resultmass)
+		// console.log(resultmass, mass[j])
+
+		// Далее сдвигаю все элементы влево и добавляю 0
+		const shiftLeft = (resultmass) => {
+			if (resultmass.length == 0) {
+				resultmass.push(0,0,0,0)
+			}
+			else if (resultmass.length > 0 && resultmass.length <= 1) {
+				resultmass.push(0,0,0)
+			}
+			else if (resultmass.length > 1 && resultmass.length <= 2) {
+				resultmass.push(0,0)
+			}
+			else if (resultmass.length > 2 && resultmass.length <= 3) {
+				resultmass.push(0)
+			}
+			else  if (resultmass.length > 3 && resultmass.length <= 4) {
+				resultmass
+			}
+			return resultmass
+		}
+
+		// Далее переписываю изменяемый массив
+		resultmass = shiftLeft(resultmass)
+		
+		mass[j] = shiftLeft(resultmass)
+		// console.log(mass[j]);
+		console.log(mass);
+		console.log(checkLeft);
+		// console.log(score);
+		// console.log(moveLeft());
+		dataView()
+	}	
+	// console.log(mass);
+	// if (1) {}
+	// console.log(noMoveArr);
+
+		if (checkLeft) {
+			randomNum()
+			dataView()
+			console.log(mass);
+			checkLeft = false
+			// console.log(noMoveArr);
+		}
+		// console.log(checkLeft);
+
+		if ( checkLeft === false )	{
+			for (let j = 0; j < mass.length; j++) {
+				// console.log(mass[j]);
+				for (let i = 3; i >= 0; i--) {
+					// console.log(mass[j][i]);
+					// i++
+					if (mass[j][i] && mass[j][i-1] == 0 && mass[j][i-1] !== undefined) {
+					console.log(mass[j][i]);
+					checkLeft = true
+				}
+			}
+		}
+			// gameover = 1
+		}
+	// noMoveArr2==noMoveArr ? 
+	// if (mass === moveLeft()) {
+		// 	console.log(mass);
+		// 	console.log(moveLeft());
+		// }
+		// let resultmass = mass
+		// console.log(checkLeft);
+		// if (checkLeft) {
+		// 	randomNum()
+		// 	checkLeft = false
+		// }
+}
+
 // для однострочного массива, движение вправо
 	let moveRight = () => {
 		// mass.reverse
