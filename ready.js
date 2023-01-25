@@ -338,41 +338,89 @@ const moveLeft = () => {
 }
 
 // для однострочного массива, движение вправо
-	let moveRight = () => {
-		// mass.reverse
-		// console.log(mass.reverse());
-	
-		let deleteMass = (qwe) => {
-			return qwe.filter(elem => elem != 0)
+let deleteZero = (array) => {
+	return array.filter(elem => elem != 0)
+}
+let move = (row) => {
+	// mass.reverse
+	// console.log(mass.reverse());
+	let hasStep = false
+
+	let row = deleteZero(row)
+	// console.log(resultmass)
+	console.log(row + " массив после удаления нулей")
+
+	// resultmass = deleteMass(mass)
+	// console.log(`массив без 0 через функцию ${deleteMass(mass)}`);
+
+	for (let i = 0; i < row.length; i++) {
+		if (row[i] === row[i + 1]) {
+			row[i] = row[i] * 2
+			row[i + 1] = 0
+			score = score + row[i]
 		}
-		deleteMass(mass)
-		let resultmass = deleteMass(mass)
-		// console.log(resultmass)
-		console.log(resultmass + " массив после удаления нулей")
+		document.getElementById('score01').innerHTML = score;
+
+	}
 	
-		// resultmass = deleteMass(mass)
-		// console.log(`массив без 0 через функцию ${deleteMass(mass)}`);
-	
-		//суммирую нужные элементы
-		let sumRightElements = (resultmass) => {
-			for (let i = resultmass.length; i >= 0; i--) {
-				if (resultmass[i-1] != undefined) {
-					if (resultmass[i] == resultmass[i-1]) {
-						score += resultmass[i] + resultmass[i-1]
-						resultmass[i] = resultmass[i] * 2
-						resultmass[i - 1] = 0
-						i--
-					}
+	//суммирую нужные элементы
+	let sumRightElements = (resultmass) => {
+		for (let i = resultmass.length; i >= 0; i--) {
+			if (resultmass[i-1] != undefined) {
+				if (resultmass[i] == resultmass[i-1]) {
+					score += resultmass[i] + resultmass[i-1]
+					resultmass[i] = resultmass[i] * 2
+					resultmass[i - 1] = 0
+					i--
 				}
 			}
-			return(resultmass)
-				// console.log(resultmass);
 		}
+		return(resultmass)
+			// console.log(resultmass);
+	}
+
+	resultmass = sumRightElements(resultmass)
+	console.log(resultmass)
+	resultmass = deleteMass(resultmass)
+	console.log(resultmass)
+
+
+
+	// let moveRight = () => {
+	// 	// mass.reverse
+	// 	// console.log(mass.reverse());
 	
-		resultmass = sumRightElements(resultmass)
-		console.log(resultmass)
-		resultmass = deleteMass(resultmass)
-		console.log(resultmass)
+	// 	let deleteMass = (qwe) => {
+	// 		return qwe.filter(elem => elem != 0)
+	// 	}
+	// 	deleteMass(mass)
+	// 	let resultmass = deleteMass(mass)
+	// 	// console.log(resultmass)
+	// 	console.log(resultmass + " массив после удаления нулей")
+	
+	// 	// resultmass = deleteMass(mass)
+	// 	// console.log(`массив без 0 через функцию ${deleteMass(mass)}`);
+	
+	// 	//суммирую нужные элементы
+	// 	let sumRightElements = (resultmass) => {
+	// 		for (let i = resultmass.length; i >= 0; i--) {
+	// 			if (resultmass[i-1] != undefined) {
+	// 				if (resultmass[i] == resultmass[i-1]) {
+	// 					score += resultmass[i] + resultmass[i-1]
+	// 					resultmass[i] = resultmass[i] * 2
+	// 					resultmass[i - 1] = 0
+	// 					i--
+	// 				}
+	// 			}
+	// 		}
+	// 		return(resultmass)
+	// 			// console.log(resultmass);
+	// 	}
+	
+	// 	resultmass = sumRightElements(resultmass)
+	// 	console.log(resultmass)
+	// 	resultmass = deleteMass(resultmass)
+	// 	console.log(resultmass)
 	
 	
 	
