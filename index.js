@@ -29,22 +29,26 @@ const newGameBoard = () => {
   	}
   }
 
+	
   // randomNum()
   // randomNum()
-	mass[0][0] = 2
+	mass[0][0] = 4
 	mass[0][1] = 2
 	mass[0][2] = 2
 	mass[0][3] = 2
 	mass[1][0] = 8
-	mass[1][1] = 4
+	mass[1][1] = 2
 	mass[1][2] = 4
 	mass[1][3] = 8
-	mass[2][0] = 0
+	mass[2][0] = 4
 	mass[2][1] = 8
-	mass[2][2] = 0
+	mass[2][2] = 2
 	mass[2][3] = 4
 	mass[3][0] = 2
 	mass[3][1] = 4
+	mass[3][2] = 8
+	mass[3][3] = 16
+	score = 0
   dataView()
 }
 newGameBoard()
@@ -73,6 +77,8 @@ function randomNum() {       // Метод генерации случайных
 		}
 
 	}
+	// checkForGameOver()
+	checkForWin()
 }
 
 function dataView() {      // Метод передачи данных на страницу и контроль смены стиля
@@ -137,6 +143,24 @@ function dataView() {      // Метод передачи данных на ст
 
 
 
+
+
+
+// document.onload(Event) {
+
+// randomNum()
+// randomNum()
+// dataView()
+// } 
+
+
+
+
+
+const deleteZero = (row) => {
+	return row.filter(elem => elem !== 0)
+}
+
 const isArraysMatch = (arr1, arr2) => {
   if (arr1.length != arr2.length) return false;
 
@@ -149,78 +173,58 @@ const isArraysMatch = (arr1, arr2) => {
   return true;
 };
 
-
-
-
-
-// randomNum()
-// randomNum()
-// dataView()
-
-
-
-
-// let checkLeft = true
-// let checkRight = true
-
-
-const deleteZero = (row) => {
-	return row.filter(elem => elem !== 0)
-}
-
-
-
-// dataView()
-
 const move = (row) => {
-		row = deleteZero(row)
-		// console.log(row)
+	row = deleteZero(row)
+	// console.log(row)
 
-		let hadMergedCube = false
+	let hadMergedCube = false
 
-		for (let i = 0; i < row.length; i++) {
-			if (row[i] === row[i + 1]) {
-				row[i] = row[i] * 2
-				row[i + 1] = 0
-				score = score + row[i]
-				hadMergedCube = true
-				document.getElementById('score01').innerHTML = score;
-				dataView()
-			}
+	for (let i = 0; i < row.length; i++) {
+		if (row[i] === row[i + 1]) {
+			row[i] = row[i] * 2
+			row[i + 1] = 0
+			score = score + row[i]
+			hadMergedCube = true
+			document.getElementById('score01').innerHTML = score;
+			// dataView()
 		}
-		// console.log(mass[c])
+	}
+	// console.log(mass[c])
 
-		row = deleteZero(row)
-		while (row.length < rows) {
-			row.push(0)
-		}
-
-		if (score > bestScore) {
-			localStorage.setItem("best-score", score)
-			document.getElementById("bestScore").innerHTML = score
-			divBestScore.innerHTML = score
-		}
-
-			// console.log([row, hadMergedCube])
-			return [row, hadMergedCube]
+	row = deleteZero(row)
+	while (row.length < rows) {
+		row.push(0)
 	}
 
+	if (score > bestScore) {
+		localStorage.setItem("best-score", score)
+		document.getElementById("bestScore").innerHTML = score
+		divBestScore.innerHTML = score
+	}
+		console.log([row, hadMergedCube])
+		return [row, hadMergedCube]
+}
 
 const moveLeft = () => {
 	let wasStep = false
 
 	for (let r = 0; r < rows; r++) {
 			let row = mass[r]
-		// console.log(row)
+		console.log(row)
 		// console.log(move(row))
 			let changedRow = move(row)
-		// console.log(changedRow)
+		console.log(changedRow[0])
 		// console.log(row)
-
+		
 		let hasModification = !isArraysMatch(row, changedRow[0])
-		// console.log(hasModification)
+		console.log(hasModification)
 		row = changedRow[0]
 		mass[r] = row
+
+		// hasModification = !isArraysMatch(row, changedRow[0])
+		// // console.log(hasModification)
+		// row = changedRow[0]
+		// mass[r] = row
 
 		// || hasModification
 		if (changedRow[1] || hasModification) {
@@ -233,6 +237,125 @@ const moveLeft = () => {
 	}
 	return wasStep
 }
+
+const moveRight = () => {
+	let wasStep = false
+
+	for (let r = 0; r < rows; r++) {
+		let row = mass[r].reverse()
+		let changedRow = move(row)
+		// console.log(changedRow);
+
+		let hasModification = !isArraysMatch(row, changedRow[0])
+		// console.log(changedRow[0]);
+		row = changedRow[0]
+		mass[r] = row.reverse()
+		// console.log(row);
+
+		if (hasModification || changedRow[1]) {
+			wasStep = true
+		}
+
+		for (let c = 0; c < columns; c++) {
+			dataView()
+		}
+	}
+	return wasStep
+}
+
+const moveUp = () => {
+	let wasStep = false
+
+	for (let c = 0; c < columns; c++) {
+		// let row = []
+		let row = [mass[0][c], mass[1][c], mass[2][c], mass[3][c]]
+		console.log(row);
+		let changedRow = move(row)
+		// console.log(changedRow);
+
+		let hasModification = !isArraysMatch(row, changedRow[0])
+		
+		row = changedRow[0]
+
+		if (changedRow[1] || hasModification) {
+			wasStep = true
+		}
+		
+		for (let r = 0; r < rows; r++) {
+			mass[r][c] = row[r]
+		}
+
+		for (let r = 0; r < rows; r++) {
+			// console.log(wasStep);
+			dataView()
+		}
+	}
+	return wasStep
+}
+
+const moveDown = () => {
+	let wasStep = false
+
+	for (let c = 0; c < columns; c++) {
+		// let row = []
+		let row = [mass[0][c], mass[1][c], mass[2][c], mass[3][c]].reverse()
+		console.log(row);
+		let changedRow = move(row)
+		// console.log(changedRow);
+
+		let hasModification = !isArraysMatch(row, changedRow[0])
+		
+		row = changedRow[0].reverse()
+
+		if (changedRow[1] || hasModification) {
+			wasStep = true
+		}
+		
+		for (let r = 0; r < rows; r++) {
+			mass[r][c] = row[r]
+		}
+
+		for (let r = 0; r < rows; r++) {
+			// console.log(wasStep);
+			dataView()
+		}
+	}
+	return wasStep
+}
+
+// const checkForGameOver = () => {
+//   let number = 0;
+
+//   for (let r = 0; r < rows; r++) {
+//     for (let c = 0; c < columns; c++) {
+//       if (mass[r][c] === 0) {
+//         number++
+//       }
+//     }
+//   }
+
+//   if (number === 0) {
+//     alert(number)
+//   }
+// }
+
+const checkForWin = () => {
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < columns; c++) {
+      let number = mass[r][c];
+
+      if (number === 2048 && flagMessage) {
+        generateGameMessage(number);
+
+        flag = false;
+      }
+
+      if (number === 8192) {
+        generateGameMessage(number);
+      }
+    }
+  }
+};
 
 		// 	// console.log(mass.length);
 		// 	if (row[i] !== row[i+1] && (row[i] !== 0)) {
@@ -585,32 +708,47 @@ const moveLeft = () => {
 // 	// console.log(sumRightElements(resultmass))
 // }
 
+// console.log(moveLeft());
+
 
 document.onkeydown = function(event){
 	let hasModification = false
 
+
 	if (event.keyCode == 37) {
 		hasModification = moveLeft()
-		if (hasModification === true) {
-			// moveLeft()
+		if (hasModification) {
 			randomNum()
+			dataView()
 		}
-		else {}
-		// moveLeft()
-		// hasModification = false
 	}
 	else if (event.keyCode == 38) {
-		// moveLeft();
-	}
+		hasModification = moveUp()
+		if (hasModification) {
+			randomNum()
+			dataView()
+		}
+	}	
 	else if (event.keyCode == 39) {
-		moveRight();	
+		hasModification = moveRight()
+		if (hasModification) {
+			randomNum()
+			dataView()
+		}
 	}
 	else if (event.keyCode == 40) {
-		// moveBottom();
+		hasModification = moveDown()
+		if (hasModification) {
+			randomNum()
+			dataView()
+		}
 	}
-	// console.log(hasModification)
-hasModification = false
 
+
+// checkGameOver()
+
+	// console.log(hasModification)
+// hasModification = false
 }
 
 
