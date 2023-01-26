@@ -58,27 +58,33 @@ function randomNum() {       // Метод генерации случайных
 
   for (let r = 0; r < rows; r++) {
     for (let c = 0; c < columns; c++) {
-      if (mass[r][c] === 0) {
+      if (mass[c][r] === 0) {
         flag = false;
       }
     }
   }
 
   while (!flag) {
-		for(;;)	{                     // Циклу for здесь нельзя задать фиксированное условие, потому что конечное условие не может быть известно, когда игра запущена, и он может работать только последовательно
-			let r = Math.floor(Math.random()*4);      // Задаем случайную величину и пусть это будет координата, в которой число появляется случайным образом
-			let c = Math.floor(Math.random()*4);
-			if(mass[c][r] === 0) {               // Если значение в текущей координате в данных равно 0 или пусто, вставляем случайное число 2 или 4
-				let num = Math.random() > 0.75 ? 4 : 2;     // Установленное случайное число 2 или 4 имеет одинаковый шанс выпадения, наполовину открыто
-				mass[c][r] = num;
-				flag = true
-				break;
-			}
-		}
+	// while (true)	{                     // Циклу for здесь нельзя задать фиксированное условие, потому что конечное условие не может быть известно, когда игра запущена, и он может работать только последовательно
+		let r = Math.floor(Math.random()*4);      // Задаем случайную величину и пусть это будет координата, в которой число появляется случайным образом
+		let c = Math.floor(Math.random()*4);
+		if(mass[c][r] === 0) {               // Если значение в текущей координате в данных равно 0 или пусто, вставляем случайное число 2 или 4
+			let num = Math.random() > 0.75 ? 4 : 2;     // Установленное случайное число 2 или 4 имеет одинаковый шанс выпадения, наполовину открыто
+			mass[c][r] = num;
+			flag = true
 
+			if (1) {
+				for (let rr = 0; rr < mass.length; rr++) {
+					for (let cc = 0; cc < mass.length; cc++) {
+						if (r+1 === rr && c === cc) {
+							
+						}
+					}
+				}
+			}
+			break;
+		}
 	}
-	// checkForGameOver()
-	checkForWin()
 }
 
 function dataView() {      // Метод передачи данных на страницу и контроль смены стиля
@@ -91,6 +97,8 @@ function dataView() {      // Метод передачи данных на ст
       }
       else {
         div.innerHTML = mass[c][r];
+        // div.classList.remove()
+        // div.classList.add(`n${mass[c][r]}`)
         div.className = 'cell n'+ mass[c][r];
       }
     }
@@ -105,73 +113,25 @@ function dataView() {      // Метод передачи данных на ст
   }
 }
 
-// let massive = []
-// for (let i = 0; i < y; i++){
-//   massive[i] = 0;
-// }
-// massive[0] = 1
-// console.log(massive);
-
-// let massiveX = []
-// for (let i = 0; i < y; i++){
-//   massiveX[i] = 0;
-// }
-// massiveX[0] = 0
-// console.log(massiveX);
-
-
-
-
-
-//если разницы между массивами после движения нет, то действие не происходит, иначе рандом 
-// function arrayDiff(a, b) {
-// 	console.log([
-// 		 ...a.filter(x => !b.includes(x)),
-// 		 ...b.filter(x => !a.includes(x))
-// 	]);
-// }
-// arrayDiff(massive, massiveX)
-
-// console.log(typeof(arrayDiff(massive, massiveX)));
-
-
-
-// console.log(`изначальный массив ${mass}`);
-
-// for (let i = 0; i < mass.length; i++) {
-// if (typeof(mass[i+1]) == "undefined") {
-
-
-
-
-
-
-// document.onload(Event) {
-
-// randomNum()
-// randomNum()
-// dataView()
-// } 
-
 
 
 
 
 const deleteZero = (row) => {
-	return row.filter(elem => elem !== 0)
+	return row.filter(elem => !!elem)
 }
 
 const isArraysMatch = (arr1, arr2) => {
-  if (arr1.length != arr2.length) return false;
+  if (arr1.length !== arr2.length) return false;
 
   for (let i = 0; i < arr1.length; i++) {
-    if(arr1[i] != arr2[i]) {
+    if(arr1[i] !== arr2[i]) {
       return false;
     }
   }
 
   return true;
-};
+}
 
 const move = (row) => {
 	row = deleteZero(row)
@@ -213,27 +173,29 @@ const moveLeft = () => {
 		console.log(row)
 		// console.log(move(row))
 			let changedRow = move(row)
+
 		console.log(changedRow[0])
 		// console.log(row)
 		
 		let hasModification = !isArraysMatch(row, changedRow[0])
-		console.log(hasModification)
-		row = changedRow[0]
-		mass[r] = row
 
+		// console.log(hasModification)
+		
 		// hasModification = !isArraysMatch(row, changedRow[0])
 		// // console.log(hasModification)
 		// row = changedRow[0]
 		// mass[r] = row
-
+		
 		// || hasModification
 		if (changedRow[1] || hasModification) {
 			wasStep = true
 		}
-
-		for (let c = 0; c < columns; c++) {
-			dataView()
-		}
+		
+		row = changedRow[0]
+		mass[r] = row
+		// for (let c = 0; c < columns; c++) {
+		// 	dataView()
+		// }
 	}
 	return wasStep
 }
@@ -256,9 +218,9 @@ const moveRight = () => {
 			wasStep = true
 		}
 
-		for (let c = 0; c < columns; c++) {
-			dataView()
-		}
+		// for (let c = 0; c < columns; c++) {
+		// 	dataView()
+		// }
 	}
 	return wasStep
 }
@@ -285,10 +247,10 @@ const moveUp = () => {
 			mass[r][c] = row[r]
 		}
 
-		for (let r = 0; r < rows; r++) {
-			// console.log(wasStep);
-			dataView()
-		}
+		// for (let r = 0; r < rows; r++) {
+		// 	// console.log(wasStep);
+		// 	dataView()
+		// }
 	}
 	return wasStep
 }
@@ -315,10 +277,10 @@ const moveDown = () => {
 			mass[r][c] = row[r]
 		}
 
-		for (let r = 0; r < rows; r++) {
-			// console.log(wasStep);
-			dataView()
-		}
+		// for (let r = 0; r < rows; r++) {
+		// 	// console.log(wasStep);
+		// 	dataView()
+		// }
 	}
 	return wasStep
 }
@@ -357,363 +319,8 @@ const checkForWin = () => {
   }
 };
 
-		// 	// console.log(mass.length);
-		// 	if (row[i] !== row[i+1] && (row[i] !== 0)) {
-		// 		i++
-		// 		if (row[i] !== row[i+1] && (row[i] !== 0)) {
-		// 			i++
-		// 		}
-		// 	}
-		// 	if ((row[i+1] !== undefined) && (row[i] === row[i+1])) {
-		// 		score += row[i] + row[i+1]
-		// 		row[i] = row[i] * 2
-		// 		row[i + 1] = 0
-		// 		i++
-		// 		checkLeft = true
-		// 		// console.log(checkLeft);
-		// 	}
-		// 	else if ((row[i+1] !== undefined) && (row[i] !== row[i+1])) {
-		// 		break
-		// 	}
-		// }
-		// return (row);
-			// console.log("helo");
-	// }
-			// console.log(row);
-
-		// row = sumLeftElemnts(row)
-	// }
-
-// }
-// moveLeft(mass)
-
-
-// const moveLeft = () => {
-// 	for (let j = 0; j < mass.length; j++) {
-//
-// 		const checkForJustMove = () => {
-// 			for (let i = 0; i < mass.length; i++) {
-// 				for (let i = 4; i > 0; i--) {
-// 					if (mass[j][i] == 0) {
-// 						checkRight = true
-// 					}
-// 				}
-// 			}
-// 		}
-// 		checkForJustMove()
-// 		// console.log(mass[j], j);
-//
-// 		// const deleteMass = (qwe) => {
-// 		// 	// console.log(qwe)
-// 		// 	const resultmass = qwe.filter(elem => elem !== 0)
-// 		// 	// console.log(resultmass + "  resultmass")
-// 		// 	return resultmass
-// 		// }
-//
-// 		let resultmass = deleteMass(mass[j])
-// 		// console.log(resultmass);
-//
-// 		const sumLeftElemnts = (resultmass) => {
-// 			for (let i = 0; i < resultmass.length; i++) {
-// 				// console.log(mass.length);
-// 				if (resultmass[i] !== resultmass[i+1] && (resultmass[i] !== 0)) {
-// 					i++
-// 					if (resultmass[i] !== resultmass[i+1] && (resultmass[i] !== 0)) {
-// 						i++
-// 					}
-// 				}
-// 				if ((resultmass[i+1] != undefined) && (resultmass[i] == resultmass[i+1])) {
-// 					score += resultmass[i] + resultmass[i+1]
-// 					resultmass[i] = resultmass[i] * 2
-// 					resultmass[i + 1] = 0
-// 					i++
-// 					checkLeft = true
-// 					// console.log(checkLeft);
-// 				}
-// 				else if ((resultmass[i+1] != undefined) && (resultmass[i] !== resultmass[i+1])) {
-// 					break
-// 				}
-// 			}
-// 			return (resultmass);
-// 				// console.log("helo");
-// 		}
-// 			// console.log(resultmass);
-//
-//
-// 		resultmass = sumLeftElemnts(resultmass)
-// 		// console.log(resultmass, mass[j])
-// 		resultmass = deleteMass(resultmass)
-// 		// console.log(resultmass, mass[j])
-//
-// 		// Далее сдвигаю все элементы влево и добавляю 0
-// 		const shiftLeft = (resultmass) => {
-// 			if (resultmass.length == 0) {
-// 				resultmass.push(0,0,0,0)
-// 			}
-// 			else if (resultmass.length > 0 && resultmass.length <= 1) {
-// 				resultmass.push(0,0,0)
-// 			}
-// 			else if (resultmass.length > 1 && resultmass.length <= 2) {
-// 				resultmass.push(0,0)
-// 			}
-// 			else if (resultmass.length > 2 && resultmass.length <= 3) {
-// 				resultmass.push(0)
-// 			}
-// 			else  if (resultmass.length > 3 && resultmass.length <= 4) {
-// 				resultmass
-// 			}
-// 			return resultmass
-// 		}
-//
-// 		// Далее переписываю изменяемый массив
-// 		resultmass = shiftLeft(resultmass)
-//
-// 		mass[j] = shiftLeft(resultmass)
-// 		// console.log(mass[j]);
-// 		// console.log(mass);
-// 		// console.log(checkLeft);
-// 		// console.log(score);
-// 		// console.log(moveLeft());
-// 		dataView()
-// 	}
-// 	// console.log(mass);
-// 	// if (1) {}
-// 	// console.log(noMoveArr);
-// 	// let firstStart = true
-// 	// if ()
-//
-// 		if (checkLeft) {
-// 			randomNum()
-// 			dataView()
-// 			console.log(mass);
-// 			checkLeft = false
-// 			// console.log(noMoveArr);
-// 		}
-// 		// console.log(checkLeft);
-//
-// 		for (let j = 0; j < mass.length; j++) {
-// 			// console.log(mass[j]);
-// 			for (let i = 3; i >= 0; i--) {
-// 				if ( checkLeft === false )	{
-// 				// console.log(mass[j][i]);
-// 				// i++
-// 				if (mass[j][i] !== 0 && mass[j][i-1] == 0 && mass[j][i-1] !== undefined) {
-// 					console.log(mass[j][i]);
-// 					checkLeft = true
-// 				}
-// 			}
-// 		}
-// 	}
-// 	console.log(checkLeft);
-// 	checkLeft = false
-// 	console.log(checkRight);
-// }
-// 			// gameover = 1
-// 	// noMoveArr2==noMoveArr ?
-// 	// if (mass === moveLeft()) {
-// 		// 	console.log(mass);
-// 		// 	console.log(moveLeft());
-// 		// }
-// 		// let resultmass = mass
-// 		// console.log(checkLeft);
-// 		// if (checkLeft) {
-// 		// 	randomNum()
-// 		// 	checkLeft = false
-// 		// }
-// 	// console.log(mass);
-// const moveRight = () => {
-//
-// 	for (let j = 0; j < mass.length; j++) {
-//
-// 		const checkForJustMove = () => {
-// 			for (let i = 0; i < mass.length; i++) {
-// 				for (let i = 0; i < 4; i++) {
-// 					if (mass[j][i] == 0 &&( mass[j][i-1] !== 0 || mass[j][i-2] !== 0  || mass[j][i-3] !== 0) && mass[j][i-1] !== undefined) {
-// 						checkLeft = true
-// 					}
-// 				}
-// 			}
-// 		}
-// 		checkForJustMove()
-//
-// 		// let resultmass = deleteMass(mass)
-// 		let resultmass = deleteMass(mass[j])
-// 		// console.log(resultmass + " массив после удаления нулей")
-//
-//
-// 		const sumRightElemnts = (resultmass) => {
-// 			for (let i = 3; i >= 0; i--) {
-// 				// console.log(mass.length);
-// 				if (resultmass[i] !== resultmass[i-1] && (resultmass[i] !== 0)) {
-// 					i--
-// 					if (resultmass[i] !== resultmass[i-1] && (resultmass[i] !== 0)) {
-// 						i--
-// 					}
-// 				}
-// 				if ((resultmass[i-1] != undefined) && (resultmass[i] == resultmass[i-1])) {
-// 					score += resultmass[i] + resultmass[i-1]
-// 					// console.log(i);
-// 					resultmass[i] = resultmass[i] * 2
-// 					resultmass[i-1] = 0
-// 					i--
-// 					checkRight = true
-// 					console.log(resultmass);
-// 				}
-// 				else if ((resultmass[i-1] != undefined) && (resultmass[i] !== resultmass[i-1])) {
-// 					break
-// 				}
-// 			}
-// 			return (resultmass);
-// 				// console.log("helo");
-// 		}
-// 			// console.log(resultmass);
-//
-//
-// 		resultmass = sumRightElemnts(resultmass)
-// 		// console.log(resultmass, mass[j])
-// 		resultmass = deleteMass(resultmass)
-// 		// console.log(resultmass, mass[j])
-//
-// 		// Далее сдвигаю все элементы влево и добавляю 0
-// 		const shiftRight = (resultmass) => {
-// 			if (resultmass.length == 0) {
-// 				resultmass.unshift(0,0,0,0)
-// 			}
-// 			else if (resultmass.length > 0 && resultmass.length <= 1) {
-// 				resultmass.unshift(0,0,0)
-// 			}
-// 			else if (resultmass.length > 1 && resultmass.length <= 2) {
-// 				resultmass.unshift(0,0)
-// 			}
-// 			else if (resultmass.length > 2 && resultmass.length <= 3) {
-// 				resultmass.unshift(0)
-// 			}
-// 			else  if (resultmass.length > 3 && resultmass.length <= 4) {
-// 				resultmass
-// 			}
-// 			return resultmass
-// 		}
-//
-// 		// Далее переписываю изменяемый массив
-// 		resultmass = shiftRight(resultmass)
-// 		mass[j] = shiftRight(resultmass)
-// 		checkForJustMove()
-// 		dataView()
-// 	}
-// 	// console.log(mass);
-// 	// if (1) {}
-// 	// console.log(noMoveArr);
-//
-// 	if (checkRight) {
-// 		randomNum()
-// 		dataView()
-// 		// console.log(mass);
-// 		checkRight = false
-// 		// console.log(noMoveArr);
-// 	}
-// 		// console.log(checkLeft);
-//
-// 	// if ( checkRight === false )	{
-// 	for (let j = 0; j < mass.length; j++) {
-// 		// console.log(mass[j]);
-// 		for (let i = 0; i < mass[j].length; i++) {
-// 			if (checkRight === false) {
-// 			// console.log(mass[j].length);
-// 			//console.log(mass[j][i]);
-// 			// i++
-// 			if (mass[j][i] !== 0 && mass[j][i+1] == 0 && mass[j][i+1] !== undefined) {
-// 				// console.log(mass[j][i]);
-// 				checkRight = true
-// 			}
-// 			}
-// 		}
-// 	}
-// 	console.log(checkLeft);
-// 	// chec
-// 	console.log(checkRight);
-// }
-// }
-		// gameover = 1
-// noMoveArr2==noMoveArr ? 
-	// if (mass === moveLeft()) {
-		// 	console.log(mass);
-		// 	console.log(moveLeft());
-		// }
-		// let resultmass = mass
-		// console.log(checkLeft);
-		// if (checkLeft) {
-		// 	randomNum()
-		// 	checkLeft = false
-		// }
-// let moveRight = () => {
-// 	// mass.reverse
-// 	// console.log(mass.reverse());
-// 	let deleteMass = (qwe) => {
-// 		return qwe.filter(elem => elem != 0)
-// 	}
-// 	deleteMass(mass)
-// 	let resultmass = deleteMass(mass)
-// 	// console.log(resultmass)
-// 	console.log(resultmass + " массив после удаления нулей")
-// 	// resultmass = deleteMass(mass)
-// 	// console.log(`массив без 0 через функцию ${deleteMass(mass)}`);
-// 	//суммирую нужные элементы
-// 	let sumRightElements = (resultmass) => {
-// 		for (let i = resultmass.length; i >= 0; i--) {
-// 			if (resultmass[i-1] != undefined) {
-// 				if (resultmass[i] == resultmass[i-1]) {
-// 					score += resultmass[i] + resultmass[i-1]
-// 					resultmass[i] = resultmass[i] * 2
-// 					resultmass[i - 1] = 0
-// 					i--
-// 				}
-// 			}
-// 		}
-// 		return(resultmass)
-// 			// console.log(resultmass);
-// 	}
-// 	resultmass = sumRightElements(resultmass)
-// 	console.log(resultmass)
-// 	resultmass = deleteMass(resultmass)
-// 	console.log(resultmass)
-// 	let sdvigRight = (resultmass) => {
-// 	if (resultmass.length == 0) {
-// 		resultmass.unshift(0,0,0,0)
-// 	}
-// 	else if (resultmass.length > 0 && resultmass.length <= 1) {
-// 		resultmass.unshift(0,0,0)
-// 	}
-// 	else if (resultmass.length > 1 && resultmass.length <= 2) {
-// 		resultmass.unshift(0,0)
-// 	}
-// 	else if (resultmass.length > 2 && resultmass.length <= 3) {
-// 		resultmass.unshift(0)
-// 	}
-// 	else  if (resultmass.length > 3 && resultmass.length <= 4) {
-// 		resultmass
-// 	}
-// 	return resultmass
-// }
-// resultmass = sdvigRight(resultmass)
-// // return sdvigLeft(resultmass)
-// let perem = sdvigRight(resultmass)
-// 	console.log(perem)
-// // return mass
-// // perem[3] = 1
-// mass = perem
-// return(mass)
-// 	// sumRightElements(resultmass)
-// 	// 	console.log(resultmass);
-// 	// 	return (resultmass);
-// 	// console.log(sumRightElements(resultmass))
-// }
-
-// console.log(moveLeft());
-
-
 document.onkeydown = function(event){
 	let hasModification = false
-
 
 	if (event.keyCode == 37) {
 		hasModification = moveLeft()
@@ -722,28 +329,39 @@ document.onkeydown = function(event){
 			dataView()
 		}
 	}
-	else if (event.keyCode == 38) {
+	if (event.keyCode == 38) {
 		hasModification = moveUp()
 		if (hasModification) {
 			randomNum()
 			dataView()
 		}
 	}	
-	else if (event.keyCode == 39) {
+	if (event.keyCode == 39) {
 		hasModification = moveRight()
 		if (hasModification) {
 			randomNum()
 			dataView()
 		}
 	}
-	else if (event.keyCode == 40) {
+	if (event.keyCode == 40) {
 		hasModification = moveDown()
 		if (hasModification) {
 			randomNum()
 			dataView()
 		}
+		hasModification
 	}
-
+	// if (checker) {
+	// 	console.log("sdvig Bb|/\/");
+	// } else {
+	// 	console.log("гаме овер");
+	// }
+	// dataView()
+	// if (moveLeft() || moveRight() || moveUp() || moveDown()) {
+	// 	console.log("sdvig Bb|/\/");
+	// } else {
+	// 	console.log("гаме овер");
+	// }
 
 // checkGameOver()
 
